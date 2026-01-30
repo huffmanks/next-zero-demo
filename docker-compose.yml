@@ -1,0 +1,49 @@
+services:
+  upstream-db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: zero
+      POSTGRES_PASSWORD: pass
+    ports:
+      - 5432:5432
+    command: postgres -c wal_level=logical
+    healthcheck:
+      test: pg_isready
+      interval: 10s
+
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      # Your API handles mutations and writes to the PG db
+      # This should be a pooled connection (e.g. pgbouncer)
+      ZERO_UPSTREAM_DB: postgres://postgres:pass@upstream-db:5432/zero
+    depends_on:
+      upstream-db:
+        condition: service_healthy
+
+  zero-cache:
+    image: rocicorp/zero:0.25.11
+    ports:
+      - 4848:4848
+    environment:
+      # Used for replication from postgres
+      # This must be a direct connection (not via pgbouncer)
+      ZERO_UPSTREAM_DB: postgres://postgres:pass@upstream-db:5432/zero
+      # Path to the SQLite replica
+      ZERO_REPLICA_FILE: /data/zero.db
+      # Password used to access the inspector and /statz
+      ZERO_ADMIN_PASSWORD: pickanewpassword
+      # URLs for your API's query and mutate endpoints
+      ZERO_QUERY_URL: http://your-api:3000/api/zero/query
+      ZERO_MUTATE_URL: http://your-api:3000/api/zero/mutate
+    volumes:
+      # Disk for the SQLite replica should be high IOPS
+      - zero-cache-data:/data
+    depends_on:
+      your-api:
+        condition: service_started
+    healthcheck:
+      test: curl -f http://localhost:4848/keepalive
+      interval: 5s
