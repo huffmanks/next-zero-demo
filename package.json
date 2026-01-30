@@ -2,18 +2,24 @@
   "name": "next-zero-demo",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "cache:dev": "exec zero-cache-dev"
+    "cache:dev": "exec zero-cache-dev",
+    "zero:generate": "drizzle-zero generate --schema ./db/schema.ts --drizzle-kit-config ./drizzle.config.ts --output ./zero/zero-schema.gen.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@rocicorp/zero": "^0.25.11",
+    "drizzle-orm": "^0.45.1",
     "nanoid": "^5.1.6",
     "next": "16.1.6",
-    "node-postgres": "^0.6.2",
     "pg": "^8.17.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -22,8 +28,10 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.8",
     "drizzle-zero": "^0.17.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const result = await handleQueryRequest(
     (name, args) => {
       const query = mustGetQuery(queries, name);
-      return query.fn({ args, ctx: { userId: "anon" } });
+      return query.fn({ args, ctx: { userId: "user_1" } });
     },
     schema,
     req,

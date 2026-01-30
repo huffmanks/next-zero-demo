@@ -1,5 +1,4 @@
-import { zeroOptions } from "@/zero";
-import { ZeroProvider } from "@rocicorp/zero/react";
+import DatabaseProvider from "@/zero/provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -26,9 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ZeroProvider {...zeroOptions}>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
-      </ZeroProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <DatabaseProvider>{children}</DatabaseProvider>
+      </body>
     </html>
   );
 }

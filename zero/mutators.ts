@@ -6,17 +6,19 @@ export const mutators = defineMutators({
     create: defineMutator(
       z.object({
         id: z.string(),
-        artistID: z.string(),
+        artistId: z.string(),
         title: z.string(),
-        year: z.number(),
+        coverArtUrl: z.string(),
+        releaseYear: z.number(),
         createdAt: z.number(),
       }),
       async ({ args, tx }) => {
         await tx.mutate.albums.insert({
           id: args.id,
-          artistId: args.artistID,
+          artistId: args.artistId,
           title: args.title,
-          releaseYear: args.year,
+          coverArtUrl: args.coverArtUrl,
+          releaseYear: args.releaseYear,
           createdAt: args.createdAt,
         });
       },

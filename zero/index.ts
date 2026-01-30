@@ -3,7 +3,7 @@ import { schema } from "@/zero/schema";
 import { Zero, ZeroOptions } from "@rocicorp/zero";
 
 export const zeroOptions: ZeroOptions = {
-  userID: "anon",
+  userID: "user_1",
   cacheURL: "http://localhost:4848",
   schema,
   mutators,

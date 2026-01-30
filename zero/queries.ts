@@ -4,9 +4,9 @@ import { z } from "zod";
 
 export const queries = defineQueries({
   albums: {
-    byArtist: defineQuery(z.object({ artistID: z.string() }), ({ args: { artistID } }) =>
+    byArtist: defineQuery(z.object({ artistId: z.string() }), ({ args: { artistId } }) =>
       zql.albums
-        .where("artistId", artistID)
+        .where("artistId", artistId)
         .orderBy("createdAt", "asc")
         .limit(10)
         .related("artist", (q) => q.one()),
