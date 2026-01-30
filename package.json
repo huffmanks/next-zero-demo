@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "cache:dev": "exec zero-cache-dev",
+    "cache:dev": "mkdir -p ./zero-cache-data/dev && dotenvx run -f .env.development -- zero-cache-dev --replica-file ./zero-cache-data/dev/zero.db",
     "zero:generate": "drizzle-zero generate --schema ./db/schema.ts --drizzle-kit-config ./drizzle.config.ts --output ./zero/zero-schema.gen.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -26,6 +26,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.52.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",

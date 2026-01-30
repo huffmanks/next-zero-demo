@@ -3,6 +3,7 @@ services:
     image: postgres:18-alpine
     environment:
       POSTGRES_DB: postgress
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
       - 5432:5432
@@ -10,7 +11,7 @@ services:
     volumes:
       - ./db/migrations:/docker-entrypoint-initdb.d
     healthcheck:
-      test: pg_isready
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
 
   app:
@@ -42,8 +43,10 @@ services:
       ZERO_MUTATE_URL: ${ZERO_MUTATE_URL}
     volumes:
       # Disk for the SQLite replica should be high IOPS
-      - ./zero-cache-data:/data
+      - ./zero-cache-data/prod:/data
     depends_on:
+      upstream-db:
+        condition: service_healthy
       app:
         condition: service_started
     healthcheck:
