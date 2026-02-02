@@ -27,6 +27,7 @@ prod-down:
 # --- HIDDEN ---
 
 _dev-up-all: _docker-up-dev
+	rm -rf .next
 	@echo "Waiting for database..."
 	@until docker compose {{base_compose_file}} exec -T upstream-db pg_isready; do sleep 1; done
 	@echo "Migrating database..."

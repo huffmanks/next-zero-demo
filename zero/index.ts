@@ -3,14 +3,18 @@ import { schema } from "@/zero/schema";
 import { Zero, ZeroOptions } from "@rocicorp/zero";
 
 export const zeroOptions: ZeroOptions = {
-  userID: "user_1",
-  cacheURL: "http://localhost:4848",
+  userID: process.env.NEXT_PUBLIC_USER_ID ?? "anon",
+  cacheURL: process.env.NEXT_PUBLIC_ZERO_SERVER,
   schema,
   mutators,
+  kvStore: "idb",
+  storageKey: process.env.NODE_ENV === "production" ? "prod-app" : "dev-app",
 };
 
-const zero = new Zero(zeroOptions);
+let zero: Zero | null = null;
 
-console.log("clientID", zero.clientID);
+if (typeof window !== "undefined") {
+  zero = new Zero(zeroOptions);
+}
 
 export { zero };

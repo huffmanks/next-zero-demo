@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "cache:dev": "mkdir -p ./zero-cache-data/dev && dotenvx run -f .env.development -- zero-cache-dev --replica-file ./zero-cache-data/dev/zero.db",
@@ -13,10 +13,12 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "dotenvx run -f .env.development -- drizzle-kit migrate",
     "db:push": "dotenvx run -f .env.development -- drizzle-kit push",
-    "db:studio": "dotenvx run -f .env.development -- drizzle-kit studio"
+    "db:studio": "dotenvx run -f .env.development -- drizzle-kit studio",
+    "gen:pwa-assets": "pwa-assets-generator --preset minimal-2023 public/favicon.svg"
   },
   "dependencies": {
     "@rocicorp/zero": "^0.25.11",
+    "@serwist/next": "^9.5.3",
     "drizzle-orm": "^0.45.1",
     "nanoid": "^5.1.6",
     "next": "16.1.6",
@@ -32,10 +34,12 @@
     "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vite-pwa/assets-generator": "^1.0.2",
     "drizzle-kit": "^0.31.8",
     "drizzle-zero": "^0.17.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "serwist": "^9.5.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

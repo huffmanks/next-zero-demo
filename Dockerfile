@@ -14,6 +14,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ARG NEXT_PUBLIC_ZERO_SERVER
+ENV NEXT_PUBLIC_ZERO_SERVER=$NEXT_PUBLIC_ZERO_SERVER
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
@@ -29,12 +31,6 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-
-# COPY --from=builder /app/.next/standalone/node_modules ./node_modules
-# COPY --from=builder /app/.next/standalone/server.js ./server.js
-
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/.next ./.next
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static

@@ -15,12 +15,14 @@ services:
       interval: 10s
 
   app:
-    build: .
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_ZERO_SERVER: ${NEXT_PUBLIC_ZERO_SERVER}
     ports:
       - 3000:3000
     environment:
-      # Your API handles mutations and writes to the PG db
-      # This should be a pooled connection (e.g. pgbouncer)
+      NEXT_PUBLIC_ZERO_SERVER: ${NEXT_PUBLIC_ZERO_SERVER}
       ZERO_UPSTREAM_DB: ${ZERO_UPSTREAM_DB}
     depends_on:
       upstream-db:
