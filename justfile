@@ -26,8 +26,7 @@ prod-down:
 
 # --- HIDDEN ---
 
-_dev-up-all: _docker-up-dev
-	rm -rf .next
+_dev-up-all: _clean _docker-up-dev
 	@echo "Waiting for database..."
 	@until docker compose {{base_compose_file}} exec -T upstream-db pg_isready; do sleep 1; done
 	@echo "Migrating database..."
@@ -43,3 +42,6 @@ _prod-up-all:
 
 _down:
 	docker compose {{base_compose_file}} down -v
+
+_clean:
+	rm -rf .next zero-cache-data
