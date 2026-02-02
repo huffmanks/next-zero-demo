@@ -19,6 +19,7 @@
   "dependencies": {
     "@rocicorp/zero": "^0.25.11",
     "@serwist/next": "^9.5.3",
+    "better-auth": "^1.4.18",
     "drizzle-orm": "^0.45.1",
     "nanoid": "^5.1.6",
     "next": "16.1.6",
