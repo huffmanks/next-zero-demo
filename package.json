@@ -9,11 +9,11 @@
     "start": "next start",
     "lint": "eslint",
     "cache:dev": "mkdir -p ./zero-cache-data/dev && dotenvx run -f .env.development -- zero-cache-dev --replica-file ./zero-cache-data/dev/zero.db",
-    "zero:generate": "drizzle-zero generate --schema ./db/schema.ts --drizzle-kit-config ./drizzle.config.ts --output ./zero/zero-schema.gen.ts",
+    "zero:generate": "dotenvx run -f .env.development -- drizzle-zero generate --schema ./db/schema.ts --drizzle-kit-config ./drizzle.config.ts --output ./zero/zero-schema.gen.ts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "dotenvx run -f .env.development -- drizzle-kit migrate",
+    "db:push": "dotenvx run -f .env.development -- drizzle-kit push",
+    "db:studio": "dotenvx run -f .env.development -- drizzle-kit studio"
   },
   "dependencies": {
     "@rocicorp/zero": "^0.25.11",

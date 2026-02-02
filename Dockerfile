@@ -18,6 +18,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 RUN corepack enable pnpm && pnpm run build
+RUN npx esbuild db/migrate.js --bundle --platform=node --outfile=db/migrate.cjs --external:pg-native
 
 # Production image
 FROM base AS runner
@@ -29,11 +30,17 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/.next/standalone/node_modules ./node_modules
-COPY --from=builder /app/.next/standalone/server.js ./server.js
+# COPY --from=builder /app/.next/standalone/node_modules ./node_modules
+# COPY --from=builder /app/.next/standalone/server.js ./server.js
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/.next ./.next
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/.next ./.next
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/db/migrations ./db/migrations
+COPY --from=builder --chown=nextjs:nodejs /app/db/migrate.cjs ./db/migrate.cjs
 
 USER nextjs
 
@@ -42,4 +49,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "node ./db/migrate.cjs && node server.js"]
